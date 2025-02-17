@@ -74,7 +74,14 @@ export class FormValidator {
 
       // Add field to validator if it has rules
       if (allRules.length > 0) {
-        this.validator.addField(`#${field.id}`, allRules);
+        // Find error container for this field
+        const errorContainer = document.querySelector(
+          `[data-error="${field.id}"]`,
+        );
+
+        this.validator.addField(`#${field.id}`, allRules, {
+          errorsContainer: errorContainer || undefined,
+        });
       }
     });
 
@@ -139,27 +146,27 @@ export class FormValidator {
 
     // Check if it's a phone field
     // Handle phone fields separately
-    if (element instanceof HTMLInputElement && element.type === 'tel') {
-      const isValid = await this.validatePhoneField(element);
-      // Update validation state
-      if (isValid) {
-        this.invalidFields.delete(fieldId);
-        element.classList.remove('error');
-        element.classList.add('success');
-      } else {
-        this.invalidFields.add(fieldId);
-        element.classList.remove('success');
-        element.classList.add('error');
-      }
+    // if (element instanceof HTMLInputElement && element.type === 'tel') {
+    //   const isValid = await this.validatePhoneField(element);
+    //   // Update validation state
+    //   if (isValid) {
+    //     this.invalidFields.delete(fieldId);
+    //     element.classList.remove('error');
+    //     element.classList.add('success');
+    //   } else {
+    //     this.invalidFields.add(fieldId);
+    //     element.classList.remove('success');
+    //     element.classList.add('error');
+    //   }
 
-      // Update error message display
-      const errorElement = document.querySelector(`[data-error="${fieldId}"]`);
-      if (errorElement) {
-        errorElement.classList.toggle('visible', !isValid);
-      }
+    //   // Update error message display
+    //   const errorElement = document.querySelector(`[data-error="${fieldId}"]`);
+    //   if (errorElement) {
+    //     errorElement.classList.toggle('visible', !isValid);
+    //   }
 
-      return isValid;
-    }
+    //   return isValid;
+    // }
 
     const isValid = await this.validator.revalidateField(selector);
 

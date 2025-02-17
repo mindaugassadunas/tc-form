@@ -50,6 +50,7 @@ const formConfig: FormConfig = {
         { value: 'ca', label: 'Canada' },
       ],
       searchable: true,
+      placeholder: 'Select a country',
     },
     datepicker: {
       type: 'datepicker',

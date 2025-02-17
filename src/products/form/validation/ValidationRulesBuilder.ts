@@ -61,6 +61,16 @@ export class ValidationRulesBuilder {
 
     // Telephone validation using intl-tel-input
     if (field.type === 'tel') {
+      // Add required validation if needed
+      if (field.required || field.hasAttribute('required')) {
+        rules.push({
+          rule: 'required' as Rules,
+          errorMessage:
+            field.getAttribute('data-validate-message-required') ||
+            'This field is required',
+        });
+      }
+
       rules.push({
         rule: 'function' as Rules,
         validator: () => {
@@ -100,7 +110,6 @@ export class ValidationRulesBuilder {
       });
     }
 
-    console.log('ready to validate');
     // Add datepicker-specific validation
     if (field.getAttribute('data-fl-element') === 'datepicker') {
       // Add required validation if needed
